@@ -53,22 +53,25 @@ public class BurgerGetPriceParameterizedTest {
         }
     }
 
-    @Parameterized.Parameters(name = "{index}: {0} | bun price={1} | ing price={2} | total price={3}")
+    @Parameterized.Parameters(name = "{index}: {0} | bun={1} | ing={2} | total={3}")
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {"бургер без ингредиентов",   100f, Collections.<Float>emptyList(), 200f},
-                {"бургер с двумя ингредиентами",    100f, Arrays.asList(50f, 20f),        270f},
-                {"все значения нули",           0f,   Arrays.asList(0f, 0f, 0f),      0f},
-                {"дробные значения",   7.5f, Arrays.asList(1.25f, 2.25f),    18.5f}
+                {"бургер без ингредиентов", 100f, Collections.<Float>emptyList(), 200f},
+                {"бургер с двумя ингредиентами", 100f, Arrays.asList(50f, 20f), 270f},
+                {"все значения нули", 0f, Arrays.asList(0f, 0f, 0f), 0f},
+                {"дробные значения", 7.5f, Arrays.asList(1.25f, 2.25f), 18.5f}
         });
     }
 
     @Test
-    public void getPrice_shouldCalculateTotalWithBunAndIngredients() {
+    public void getPrice_shouldReturnExpectedTotal() {
         float total = burger.getPrice();
-
         assertEquals(expectedTotal, total, 1e-6f);
+    }
 
+    @Test
+    public void getPrice_shouldQueryBunAndEachIngredientOnce() {
+        burger.getPrice();
         verify(bunMock, times(1)).getPrice();
         for (Ingredient ing : ingredientMocks) {
             verify(ing, times(1)).getPrice();
