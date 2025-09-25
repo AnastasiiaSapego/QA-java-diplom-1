@@ -64,13 +64,13 @@ public class BurgerGetPriceParameterizedTest {
     }
 
     @Test
-    public void getPrice_shouldReturnExpectedTotal() {
+    public void getPriceShouldReturnExpectedTotal() {
         float total = burger.getPrice();
         assertEquals(expectedTotal, total, 1e-6f);
     }
 
     @Test
-    public void getPrice_shouldQueryBunAndEachIngredientOnce() {
+    public void getPriceShouldQueryBunAndEachIngredientOnce() {
         burger.getPrice();
         verify(bunMock, times(1)).getPrice();
         for (Ingredient ing : ingredientMocks) {
